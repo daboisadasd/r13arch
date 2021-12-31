@@ -24,4 +24,4 @@ rn("tar -xf ArchLinuxARM-oak-latest.tar.gz -C root")
 rn("dd if=root/boot/vmlinux.kpart of=/dev/mmcblk1p1")
 rn("umount root")
 rn("sync")
-
+rn('echo "Setup commands: wifi-menu, pacman-key --init, pacman-key --init --populate archlinuxarm" > /tmp/root/home')
