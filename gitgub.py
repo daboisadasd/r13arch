@@ -1,0 +1,27 @@
+import time
+import os
+def rn(code):
+	os.system(code)
+rn("umount /dev/mmcblk1*")
+print("Press the letter g then press enter")
+print("Press the letter w then press enter")
+rn("fdisk /dev/mmcblk1")
+t = input("Press enter")
+rn("cgpt create /dev/mmcblk1")
+time.sleep(.5)
+rn("cgpt add -i 1 -t kernel -b 8192 -s 65536 -l Kernel -S 1 -T 5 -P 10 /dev/mmcblk1")
+rn('cgpt show /dev/mmcblk1 | grep "Sec GPT table"')
+xxxxx = input("Type the large number you see above: ")
+hmm = ("cgpt add -i 2 -t data -b 73728 -s `expr "+xxxxx+" - 73728` -l Root /dev/mmcblk1")
+rn(hmm)
+rn("partx -a /dev/mmcblk1")
+rn("mkfs.ext4 /dev/mmcblk1p2")
+rn("cd /tmp")
+rn("curl -LO http://os.archlinuxarm.org/os/ArchLinuxARM-oak-latest.tar.gz")
+rn("mkdir root")
+rn("mount /dev/mmcblk1p2 root")
+rn("tar -xf ArchLinuxARM-oak-latest.tar.gz -C root")
+rn("dd if=root/boot/vmlinux.kpart of=/dev/mmcblk1p1")
+rn("umount root")
+rn("sync")
+
